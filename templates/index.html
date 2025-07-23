@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Информационно-корректирующий модуль</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <script>
+        function toggleInput(method) {
+            document.getElementById("file-form").style.display = method === 'file' ? 'block' : 'none';
+            document.getElementById("manual-form").style.display = method === 'manual' ? 'block' : 'none';
+        }
+    </script>
+</head>
+<body>
+    <h2>Проверка таможенной декларации</h2>
+
+    <div>
+        <button onclick="toggleInput('file')">Загрузить файл</button>
+        <button onclick="toggleInput('manual')">Заполнить вручную</button>
+    </div>
+
+    <!-- Форма загрузки -->
+    <form id="file-form" action="/upload" enctype="multipart/form-data" method="post" style="display: none;">
+        <input type="file" name="file" required>
+        <button type="submit">Проверить</button>
+    </form>
+
+    <!-- Ручная форма -->
+    <form id="manual-form" action="/manual-check" method="post" style="display: none;">
+        <label>Название товара:</label>
+        <input type="text" name="name" required><br>
+        <label>Код ТН ВЭД:</label>
+        <input type="text" name="tnved" required><br>
+        <label>Страна происхождения:</label>
+        <input type="text" name="country" required><br>
+        <label>Валюта:</label>
+        <input type="text" name="currency" required><br>
+        <label>Цена:</label>
+        <input type="number" name="price" step="0.01" required><br>
+        <button type="submit">Проверить</button>
+    </form>
+
+    {% if result %}
+    <h3>Результат:</h3>
+    <pre>{{ result }}</pre>
+    {% endif %}
+
+</body>
+</html>
